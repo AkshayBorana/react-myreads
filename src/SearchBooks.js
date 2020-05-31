@@ -12,24 +12,37 @@ class SearchBooks extends Component {
     handleQuerySearch = (e) => {
         const {value} = e.target;
         const search = value.trim();
-        BooksAPI.search(search).then(
-            (books) => {
+        // BooksAPI.search(search).then(
+        //     (books) => {
 
-                this.setState(() => ({
-                    searchQuery: search
-                }))
+        //         this.setState(() => ({
+        //             searchQuery: search
+        //         }))
 
-                const searchResults = books.length ?  books.filter(book => {
-                    return (
-                            book.title.toLowerCase().includes(search.toLowerCase()) ||
-                            book.authors.toString().toLowerCase().includes(search.toLowerCase())
-                        );
-                }) : [];
-            },
-            (err) => {
-                console.log(err);
+        //         const searchResults = books.length ?  books.filter(book => {
+        //             return (
+        //                     book.title.toLowerCase().includes(search.toLowerCase()) ||
+        //                     book.authors.toString().toLowerCase().includes(search.toLowerCase())
+        //                 );
+        //         }) : [];
+        //     },
+        //     (err) => {
+        //         console.log(err);
+        //     }
+        // )(
+        BooksAPI.search(search).then((res) => {
+
+            this.setState({searchQuery: search})
+
+            if(res.length) {
+                console.log(res);
+
+            }else {
+                console.log(res);
+                console.log('obj');
             }
-        )
+        }, (err) => {console.log(err)})
+
 
     }
 

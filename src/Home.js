@@ -3,6 +3,10 @@ import Books from './Books';
 
 class Home extends Component {
 
+    handleChange = (book) => {
+        this.props.updateShelf(book);
+    }
+
     render() {
 
         const { books } = this.props;
@@ -16,7 +20,9 @@ class Home extends Component {
                     <h1>Currently Reading</h1>
                     <hr />
                     {currentlyReading && (
-                        <Books books={currentlyReading} />
+                        <Books
+                         books={currentlyReading}
+                         changeShelf={this.handleChange} />
                     )}
                 </div>
 
@@ -24,7 +30,9 @@ class Home extends Component {
                     <h1>Want To Read</h1>
                     <hr />
                     {wantToRead && (
-                        <Books books={wantToRead} />
+                        <Books
+                         books={wantToRead}
+                         changeShelf={this.handleChange} />
                     )}
                 </div>
 
@@ -32,7 +40,9 @@ class Home extends Component {
                     <h1>Read</h1>
                     <hr />
                     {read && (
-                        <Books books={read} />
+                        <Books
+                         books={read}
+                         changeShelf={this.handleChange} />
                     )}
                 </div>
             </div>

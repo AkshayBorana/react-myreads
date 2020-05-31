@@ -1,5 +1,4 @@
 import React from 'react'
-// import * as BooksAPI from './BooksAPI'
 import './App.css'
 import * as BooksAPI from './BooksAPI';
 import { Route } from 'react-router-dom';
@@ -7,6 +6,7 @@ import SearchBooks from './SearchBooks';
 import Home from './Home';
 
 class BooksApp extends React.Component {
+
   state = {
     books: []
   }
@@ -19,14 +19,20 @@ class BooksApp extends React.Component {
     )
   }
 
+  handleChange = (book) => {
+  }
+
   render() {
 
     const { books } = this.state;
+
     return (
       <div className="app">
 
         <Route path="/" exact render={() => (
-          <Home books={books}/>
+          <Home
+           books={books}
+           updateShelf={this.handleChange} />
         )}></Route>
 
         <Route path="/search" render={() => (
