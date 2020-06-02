@@ -42,9 +42,7 @@ class BooksApp extends React.Component {
       BooksAPI.search(query).then(
         res => {
           if(res && res.length) {
-            this.setState(() => ({
-              queriedBooks: res
-            }))
+            this.handleShelfChange(res);
           } else {
             this.setState(() => ({
               queriedBooks: []
@@ -59,17 +57,23 @@ class BooksApp extends React.Component {
     }
   }
 
-  // handleShelfChange = (queriedBooks) => {
-  //   for(let queriedBook of queriedBooks) {
-  //     for(let book of this.state.books) {
-  //       queriedBook.shelf = book.id === queriedBook.id ? book.shelf : 'none';
-  //     }
-  //   }
+  // To match books shelf both on home and search page...
+  handleShelfChange = (searchedBooks) => {
+    this.setState((prevState) => ({
+      queriedBooks: searchedBooks.map(searchedBook => {
+        for(let book of this.state.books) {
+          if (searchedBook.id === book.id) {
+            searchedBook.shelf = book.shelf
+            break;
+          } else {
+            searchedBook.shelf = 'none'
+          }
+        }
+        return searchedBook;
+      })
+    }))
+  }
 
-  //   this.setState(() => ({
-  //     queriedBooks: queriedBooks
-  //   }))
-  // }
 
   render() {
 
