@@ -26,6 +26,7 @@ class SearchBooks extends Component {
 
     render() {
         const { queriedBooks }  = this.props;
+        console.log(queriedBooks)
 
         return(
             <div className="search-books">
@@ -46,14 +47,15 @@ class SearchBooks extends Component {
                             <div className="bookshelf-books">
                                 <ol className="books-grid">
                                     {
-                                        queriedBooks && queriedBooks.map(queriedbook => {
-                                        return (
-                                            <Books
-                                             book={queriedbook}
-                                             key={queriedbook.id}
-                                             changeShelf={this.changeShelf}
-                                            />)
-                                        })
+                                        queriedBooks.length ? (queriedBooks.map(queriedbook => {
+                                            return (
+                                                <Books
+                                                book={queriedbook}
+                                                key={queriedbook.id}
+                                                changeShelf={this.changeShelf}
+                                                />)
+                                            })) :
+                                        (<h2 className="bookshelf-title">No Results Found...</h2>)
                                     }
                                 </ol>
                             </div>

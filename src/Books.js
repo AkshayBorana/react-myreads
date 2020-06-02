@@ -14,10 +14,15 @@ class Books extends Component {
             <li>
                 <div className="book">
                     <div className="book-top">
-                        { book.imageLinks.thumbnail &&
-                            <div className="book-cover"
-                            style={{ width: 128, height: 192, backgroundImage: `url(${book.imageLinks.thumbnail})` }}>
-                            </div>
+                        { (book.imageLinks && book.imageLinks.thumbnail) ?
+                            (<div className="book-cover"
+                                style={{ width: 128, height: 192, backgroundImage: `url(${book.imageLinks.thumbnail})` }}>
+                            </div>) :
+
+                            (<div className="book-cover"
+                                style={{ width: 128, height: 192, backgroundColor: 'black' }}>
+                            </div>)
+
                         }
                         <div className="book-shelf-changer">
                             <select name={book.id}  value={book.shelf} onChange={(e) => this.handleChange(book, e)}>
