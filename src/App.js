@@ -22,7 +22,18 @@ class BooksApp extends React.Component {
   }
 
   // invoked when a book is moved from one shelf to another.
-  update = (book) => {
+  updateShelf = (book, shelf) => {
+    BooksAPI.update(book, shelf)
+      .then((res) => {
+        if(res) {
+          book.shelf = shelf;
+          this.setState((prevState) => ({
+            books: prevState.books.filter(b => {
+              return b.id !== book.id;
+            }).concat(book)
+          }))
+        }
+    })
   }
 
   // to get books results on search page...
@@ -71,7 +82,7 @@ class BooksApp extends React.Component {
         <Route path="/" exact render={() => (
           <Home
            books={books}
-           updateShelf={this.update} />
+           updateShelf={this.updateShelf} />
         )}>
         </Route>
 
@@ -80,7 +91,7 @@ class BooksApp extends React.Component {
           <SearchBooks
            queriedBooks={queriedBooks}
            handleQuery={this.handleQuery}
-           updateShelf={this.update}/>
+           updateShelf={this.updateShelf}/>
         )}></Route>
 
       </div>

@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 
 class Home extends Component {
 
-    changeShelf = (updatedBookStatus) => {
-        this.props.updateShelf(updatedBookStatus);
+    changeShelf = (book, shelf) => {
+        this.props.updateShelf(book, shelf);
     }
 
     render() {

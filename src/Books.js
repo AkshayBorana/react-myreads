@@ -4,10 +4,8 @@ import * as BooksAPI from './BooksAPI';
 class Books extends Component {
 
     handleChange = (book, e) => {
-        const { value } = e.target;
-        BooksAPI.update(book, value).then(res => {
-            this.props.changeShelf(res)
-        });
+        const shelf = e.target.value;
+        this.props.changeShelf(book, shelf)
     }
 
     render() {
