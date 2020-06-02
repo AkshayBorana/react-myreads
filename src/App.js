@@ -12,6 +12,7 @@ class BooksApp extends React.Component {
     queriedBooks: []
   }
 
+  // Initial call to get all books on Home page or shelf...
   componentDidMount() {
     BooksAPI.getAll().then((books) =>
       this.setState(() => ({
@@ -24,13 +25,15 @@ class BooksApp extends React.Component {
   update = (book) => {
   }
 
+  // to get books results on search page...
   handleQuery = (query) => {
     if(query) {
       BooksAPI.search(query).then(
         res => {
-          console.log(res);
           if(res && res.length) {
-            this.handleShelfChange(res)
+            this.setState(() => ({
+              queriedBooks: res
+            }))
           } else {
             this.setState(() => ({
               queriedBooks: []
@@ -45,17 +48,17 @@ class BooksApp extends React.Component {
     }
   }
 
-  handleShelfChange = (queriedBooks) => {
-    for(let queriedBook of queriedBooks) {
-      for(let book of this.state.books) {
-        queriedBook.shelf = book.id === queriedBook.id ? book.shelf : 'none';
-      }
-    }
+  // handleShelfChange = (queriedBooks) => {
+  //   for(let queriedBook of queriedBooks) {
+  //     for(let book of this.state.books) {
+  //       queriedBook.shelf = book.id === queriedBook.id ? book.shelf : 'none';
+  //     }
+  //   }
 
-    this.setState(() => ({
-      queriedBooks: queriedBooks
-    }))
-  }
+  //   this.setState(() => ({
+  //     queriedBooks: queriedBooks
+  //   }))
+  // }
 
   render() {
 
@@ -64,12 +67,15 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
 
+        {/* Home page... */}
         <Route path="/" exact render={() => (
           <Home
            books={books}
            updateShelf={this.update} />
-        )}></Route>
+        )}>
+        </Route>
 
+        {/* Search page... */}
         <Route path="/search" render={() => (
           <SearchBooks
            queriedBooks={queriedBooks}

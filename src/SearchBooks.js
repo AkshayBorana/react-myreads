@@ -9,15 +9,16 @@ class SearchBooks extends Component {
         searchQuery: '',
     }
 
-    handleQuerySearch = (e) => {
-        const query = e.target.value;
+    handleSearchQuery = (e) => {
+        const query = e.target.value.trim();
 
-        this.setState({searchQuery: query})
-
-        if(this.state.searchQuery.length) {
-            console.log(this.state.searchQuery);
-            this.props.handleQuery(this.state.searchQuery);
-        }
+        this.setState((prevState) => {
+            return {searchQuery: query}
+        }, () => {
+            if(this.state.searchQuery.length > 0) {
+                this.props.handleQuery(this.state.searchQuery);
+            }
+        })
     }
 
     changeShelf = (updatedBookStatus) => {
@@ -36,7 +37,7 @@ class SearchBooks extends Component {
                             type="text"
                             placeholder="Search by title or author"
                             value={this.state.searchQuery}
-                            onChange={this.handleQuerySearch}/>
+                            onChange={this.handleSearchQuery}/>
                     </div>
                 </div>
 
