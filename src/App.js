@@ -8,7 +8,8 @@ import Home from './Home';
 class BooksApp extends React.Component {
 
   state = {
-    books: []
+    books: [],
+    queriedBooks: []
   }
 
   componentDidMount() {
@@ -19,12 +20,46 @@ class BooksApp extends React.Component {
     )
   }
 
-  handleChange = (book) => {
+  // invoked when a book is moved from one shelf to another.
+  update = (book) => {
+  }
+
+  handleQuery = (query) => {
+    if(query) {
+      BooksAPI.search(query).then(
+        res => {
+          console.log(res);
+          if(res && res.length) {
+            this.handleShelfChange(res)
+          } else {
+            this.setState(() => ({
+              queriedBooks: []
+            }))
+          }
+        }
+      )
+    }else {
+      this.setState(() => ({
+        queriedBooks: []
+      }))
+    }
+  }
+
+  handleShelfChange = (queriedBooks) => {
+    for(let queriedBook of queriedBooks) {
+      for(let book of this.state.books) {
+        queriedBook.shelf = book.id === queriedBook.id ? book.shelf : 'none';
+      }
+    }
+
+    this.setState(() => ({
+      queriedBooks: queriedBooks
+    }))
   }
 
   render() {
 
-    const { books } = this.state;
+    const { books, queriedBooks } = this.state;
 
     return (
       <div className="app">
@@ -32,11 +67,14 @@ class BooksApp extends React.Component {
         <Route path="/" exact render={() => (
           <Home
            books={books}
-           updateShelf={this.handleChange} />
+           updateShelf={this.update} />
         )}></Route>
 
         <Route path="/search" render={() => (
-          <SearchBooks books={books}/>
+          <SearchBooks
+           queriedBooks={queriedBooks}
+           handleQuery={this.handleQuery}
+           updateShelf={this.update}/>
         )}></Route>
 
       </div>

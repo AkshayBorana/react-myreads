@@ -3,9 +3,11 @@ import * as BooksAPI from './BooksAPI';
 
 class Books extends Component {
 
-    handleChange = (e) => {
-        const { value, name } = e.target;
-        BooksAPI.update({ id:name }, value).then(res => this.props.changeShelf(res));
+    handleChange = (book, e) => {
+        const { value } = e.target;
+        BooksAPI.update(book, value).then(res => {
+            this.props.changeShelf(res)
+        });
     }
 
     render() {
@@ -17,7 +19,7 @@ class Books extends Component {
                     <div className="book-top">
                         <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
                             <div className="book-shelf-changer">
-                                <select name={book.id}  value={book.shelf} onChange={this.handleChange}>
+                                <select name={book.id}  value={book.shelf} onChange={(e) => this.handleChange(book, e)}>
                                     <option value="move" disabled>Move to...</option>
                                     <option value="currentlyReading">Currently Reading</option>
                                     <option value="wantToRead">Want to Read</option>

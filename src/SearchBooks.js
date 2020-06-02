@@ -7,40 +7,25 @@ class SearchBooks extends Component {
 
     state = {
         searchQuery: '',
-        searchResults: [],
-        isResultesPresent: null
     }
 
     handleQuerySearch = (e) => {
-        const {value} = e.target;
-        const search = value.trim();
+        const query = e.target.value;
 
-        this.setState({searchQuery: search})
-        console.log(this.state.searchQuery);
+        this.setState({searchQuery: query})
 
-        if(this.state.searchQuery) {
-            BooksAPI.search(this.state.searchQuery).then(
-                res => {
-                    if(res && res.length){
-                        this.setState(() => ({
-                            searchResults: res
-                        }))
-                    } else {
-                        this.setState(() => ({
-                            searchResults: []
-                        }))
-                    }
-                }
-            )
-        }else {
-            this.setState(() => ({
-                searchResults: []
-            }))
+        if(this.state.searchQuery.length) {
+            console.log(this.state.searchQuery);
+            this.props.handleQuery(this.state.searchQuery);
         }
     }
 
+    changeShelf = (updatedBookStatus) => {
+        this.props.updateShelf(updatedBookStatus);
+    }
+
     render() {
-        const { searchResults }  = this.state;
+        const { queriedBooks }  = this.props;
 
         return(
             <div className="search-books">
@@ -54,10 +39,25 @@ class SearchBooks extends Component {
                             onChange={this.handleQuerySearch}/>
                     </div>
                 </div>
+
+                {/* displaying search results */}
                 <div className="search-books-results">
-                    <ol className="books-grid">
-                       {searchResults.length > 0 && (<Books books={searchResults} />)}
-                    </ol>
+                    <div className="bookshelf">
+                            <div className="bookshelf-books">
+                                <ol className="books-grid">
+                                    {
+                                        queriedBooks && queriedBooks.map(queriedbook => {
+                                        return (
+                                            <Books
+                                             book={queriedbook}
+                                             key={queriedbook.id}
+                                             changeShelf={this.changeShelf}
+                                            />)
+                                        })
+                                    }
+                                </ol>
+                            </div>
+                    </div>
                 </div>
             </div>
         )
