@@ -6,56 +6,41 @@ import * as BooksAPI from './BooksAPI';
 class SearchBooks extends Component {
 
     state = {
-        searchQuery: ''
+        searchQuery: '',
+        searchResults: [],
+        isResultesPresent: null
     }
 
     handleQuerySearch = (e) => {
         const {value} = e.target;
         const search = value.trim();
-        // BooksAPI.search(search).then(
-        //     (books) => {
 
-        //         this.setState(() => ({
-        //             searchQuery: search
-        //         }))
+        this.setState({searchQuery: search})
+        console.log(this.state.searchQuery);
 
-        //         const searchResults = books.length ?  books.filter(book => {
-        //             return (
-        //                     book.title.toLowerCase().includes(search.toLowerCase()) ||
-        //                     book.authors.toString().toLowerCase().includes(search.toLowerCase())
-        //                 );
-        //         }) : [];
-        //     },
-        //     (err) => {
-        //         console.log(err);
-        //     }
-        // )(
-        BooksAPI.search(search).then((res) => {
-
-            this.setState({searchQuery: search})
-
-            if(res.length) {
-                console.log(res);
-
-            }else {
-                console.log(res);
-                console.log('obj');
-            }
-        }, (err) => {console.log(err)})
-
-
+        if(this.state.searchQuery) {
+            BooksAPI.search(this.state.searchQuery).then(
+                res => {
+                    if(res && res.length){
+                        this.setState(() => ({
+                            searchResults: res
+                        }))
+                    } else {
+                        this.setState(() => ({
+                            searchResults: []
+                        }))
+                    }
+                }
+            )
+        }else {
+            this.setState(() => ({
+                searchResults: []
+            }))
+        }
     }
 
     render() {
-        const { books }  = this.props;
-        const { searchQuery } = this.state;
-
-        // const searchResults = searchQuery === '' ? books : books.filter(book => {
-        //     return(
-        //         book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        //         book.authors.toString().toLowerCase().includes(searchQuery.toLowerCase())
-        //     );
-        // })
+        const { searchResults }  = this.state;
 
         return(
             <div className="search-books">
@@ -71,7 +56,7 @@ class SearchBooks extends Component {
                 </div>
                 <div className="search-books-results">
                     <ol className="books-grid">
-                        {/* {searchResults && (<Books books={searchResults} />)} */}
+                       {searchResults.length > 0 && (<Books books={searchResults} />)}
                     </ol>
                 </div>
             </div>

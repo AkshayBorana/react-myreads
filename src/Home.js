@@ -3,8 +3,8 @@ import Books from './Books';
 
 class Home extends Component {
 
-    handleChange = (book) => {
-        this.props.updateShelf(book);
+    handleChange = (updatedBookStatus) => {
+        this.props.updateShelf(updatedBookStatus);
     }
 
     render() {
@@ -15,38 +15,72 @@ class Home extends Component {
         const read  = books.filter(book => book.shelf === 'read');
 
         return(
-            <div>
-                <div>
-                    <h1>Currently Reading</h1>
-                    <hr />
-                    {currentlyReading && (
-                        <Books
-                         books={currentlyReading}
-                         changeShelf={this.handleChange} />
-                    )}
+            <div className="list-books">
+                <div className="list-books-title">
+                    <h1>MyReads</h1>
                 </div>
+                <div className="list-books-content">
+                    <div>
+                        {/* Currently reading book shelf */}
+                        <div className="bookshelf">
+                            <h2 className="bookshelf-title">Currently Reading</h2>
+                            <div className="bookshelf-books">
+                                <ol className="books-grid">
+                                {currentlyReading &&
+                                    currentlyReading.map(book => {
+                                        return (
+                                        <Books
+                                         book={book}
+                                         key={book.id}
+                                         changeShelf={this.handleChange}
+                                        />)
+                                    })
+                                }
+                                </ol>
+                            </div>
+                        </div>
 
-                <div>
-                    <h1>Want To Read</h1>
-                    <hr />
-                    {wantToRead && (
-                        <Books
-                         books={wantToRead}
-                         changeShelf={this.handleChange} />
-                    )}
-                </div>
+                        {/* Want to read book shelf */}
+                        <div className="bookshelf">
+                            <h2 className="bookshelf-title">Want to Read</h2>
+                            <div className="bookshelf-books">
+                                <ol className="books-grid">
+                                {wantToRead &&
+                                    wantToRead.map(book => {
+                                        return (
+                                        <Books
+                                         book={book}
+                                         key={book.id}
+                                         changeShelf={this.handleChange}
+                                        />)
+                                    })
+                                }
+                                </ol>
+                            </div>
+                        </div>
 
-                 <div>
-                    <h1>Read</h1>
-                    <hr />
-                    {read && (
-                        <Books
-                         books={read}
-                         changeShelf={this.handleChange} />
-                    )}
+                        {/* Read book shelf */}
+                        <div className="bookshelf">
+                            <h2 className="bookshelf-title">Read</h2>
+                            <div className="bookshelf-books">
+                                <ol className="books-grid">
+                                {read &&
+                                    read.map(book => {
+                                        return (
+                                        <Books
+                                         book={book}
+                                         key={book.id}
+                                         changeShelf={this.handleChange}
+                                        />)
+                                    })
+                                }
+                                </ol>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
-
         )
     }
 }
