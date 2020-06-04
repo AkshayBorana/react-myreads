@@ -38,6 +38,7 @@ class BooksApp extends React.Component {
 
   // to get books results on search page...
   handleQuery = (query) => {
+    console.log(query);
     if(query) {
       BooksAPI.search(query).then(
         res => {

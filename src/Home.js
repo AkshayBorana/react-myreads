@@ -4,16 +4,15 @@ import { Link } from 'react-router-dom';
 
 class Home extends Component {
 
-    changeShelf = (book, shelf) => {
-        this.props.updateShelf(book, shelf);
-    }
-
     render() {
 
-        const { books } = this.props;
-        const currentlyReading = books.filter(book => book.shelf === 'currentlyReading');
-        const wantToRead  = books.filter(book => book.shelf === 'wantToRead');
-        const read  = books.filter(book => book.shelf === 'read');
+        const shelves = [
+            { title: 'Want To Read', key: 'wantToRead'},
+            { title: 'Currently Reading', key: 'currentlyReading'},
+            { title: 'Read', key: 'read'}
+        ]
+
+        const { books, updateShelf } = this.props;
 
         return(
             <div className="list-books">
@@ -22,69 +21,39 @@ class Home extends Component {
                 </div>
                 <div className="list-books-content">
                     <div>
-                        {/* Currently reading book shelf */}
-                        <div className="bookshelf">
-                            <h2 className="bookshelf-title">Currently Reading</h2>
-                            <div className="bookshelf-books">
-                                <ol className="books-grid">
-                                {currentlyReading &&
-                                    currentlyReading.map(book => {
-                                        return (
-                                        <Books
-                                         book={book}
-                                         key={book.id}
-                                         changeShelf={this.changeShelf}
-                                        />)
-                                    })
-                                }
-                                </ol>
-                            </div>
-                        </div>
+                        {
+                            shelves.map((shelfBook, i) => {
+                                const shelvesBooks = books.filter(book => book.shelf === shelfBook.key);
 
-                        {/* Want to read book shelf */}
-                        <div className="bookshelf">
-                            <h2 className="bookshelf-title">Want to Read</h2>
-                            <div className="bookshelf-books">
-                                <ol className="books-grid">
-                                {wantToRead &&
-                                    wantToRead.map(book => {
-                                        return (
-                                        <Books
-                                         book={book}
-                                         key={book.id}
-                                         changeShelf={this.changeShelf}
-                                        />)
-                                    })
-                                }
-                                </ol>
-                            </div>
-                        </div>
+                                    return (
 
-                        {/* Read book shelf */}
-                        <div className="bookshelf">
-                            <h2 className="bookshelf-title">Read</h2>
-                            <div className="bookshelf-books">
-                                <ol className="books-grid">
-                                {read &&
-                                    read.map(book => {
-                                        return (
-                                        <Books
-                                         book={book}
-                                         key={book.id}
-                                         changeShelf={this.changeShelf}
-                                        />)
-                                    })
-                                }
-                                </ol>
-                            </div>
-                        </div>
+                                        <div className="bookshelf" key={i}>
+                                            <h2 className="bookshelf-title">{shelfBook.title}</h2>
+                                            <div className="bookshelf-books">
+                                                <ol className="books-grid">
+                                                    {   shelvesBooks.map(book => {
+                                                        return (
+                                                            <Books
+                                                            book={book}
+                                                            key={book.id}
+                                                            changeShelf={updateShelf}
+                                                            />
+                                                        )
+                                                    })
+                                                    }
+                                                </ol>
+                                            </div>
+                                        </div>
+                                    )
+                            })
+                        }
 
-                        <div className="open-search">
-                            <Link to="/search">Add a book</Link>
-                        </div>
+                     <div className="open-search">
+                        <Link to="/search">Add a book</Link>
                     </div>
                 </div>
             </div>
+        </div>
         )
     }
 }

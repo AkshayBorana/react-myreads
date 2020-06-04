@@ -9,13 +9,15 @@ class SearchBooks extends Component {
     }
 
     handleSearchQuery = (e) => {
-        const query = e.target.value.trim();
+        const query = e.target.value;
 
         this.setState((prevState) => {
             return {searchQuery: query}
         }, () => {
-            if(this.state.searchQuery.length > 0) {
+            if(this.state.searchQuery.trim() !== '') {
                 this.props.handleQuery(this.state.searchQuery);
+            }else {
+                this.props.handleQuery('');
             }
         })
     }
@@ -26,7 +28,6 @@ class SearchBooks extends Component {
 
     render() {
         const { queriedBooks }  = this.props;
-        console.log(queriedBooks)
 
         return(
             <div className="search-books">
